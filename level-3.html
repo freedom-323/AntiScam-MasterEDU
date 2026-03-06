@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系統設置 - 無線網絡</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f0f0f0; margin: 0; padding: 0; }
+        .phone-screen { max-width: 400px; height: 100vh; background: #fff; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+        .header { background: #f8f8f8; padding: 20px; border-bottom: 1px solid #ddd; text-align: center; }
+        .header h1 { font-size: 24px; margin: 0; color: #333; }
+        
+        .wifi-list { flex: 1; padding: 10px; }
+        .wifi-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+            border-bottom: 1px solid #eee; 
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .wifi-item:hover { background: #f5f5f5; }
+        .wifi-info { display: flex; flex-direction: column; }
+        .wifi-name { font-size: 20px; font-weight: bold; color: #000; }
+        .wifi-speed { font-size: 16px; color: #666; margin-top: 5px; }
+        .wifi-icon { font-size: 24px; }
+        
+        .instruction { background: #fff3cd; padding: 15px; font-size: 18px; color: #856404; text-align: center; border-bottom: 1px solid #ffeeba; }
+    </style>
+</head>
+<body>
+
+<div class="phone-screen">
+    <div class="header">
+        <h1>Wi-Fi 設置</h1>
+    </div>
+    
+    <div class="instruction">
+        請選擇一個安全的網絡連接：
+    </div>
+
+    <div class="wifi-list">
+        <!-- 陷阱選項：速度快但來源不明 -->
+        <div class="wifi-item" onclick="connectToPublic()">
+            <div class="wifi-info">
+                <span class="wifi-name">🔓 Public Superspeed Wifi</span>
+                <span class="wifi-speed">速度：3Mb/s (極速)</span>
+            </div>
+            <div class="wifi-icon">📶</div>
+        </div>
+
+        <!-- 正確選項：速度慢但安全可靠 -->
+        <div class="wifi-item" onclick="connectToHome()">
+            <div class="wifi-info">
+                <span class="wifi-name">🔒 My home</span>
+                <span class="wifi-speed">速度：750 kb/s (一般)</span>
+            </div>
+            <div class="wifi-icon">📶</div>
+        </div>
+
+        <!-- 其他裝飾選項 -->
+        <div class="wifi-item">
+            <div class="wifi-info">
+                <span class="wifi-name">🔒 Coffee_Shop_Guest</span>
+                <span class="wifi-speed">需登入</span>
+            </div>
+            <div class="wifi-icon">📶</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function connectToPublic() {
+        // 直接觸發中毒畫面
+        window.location.href = "virus.html";
+    }
+
+    function connectToHome() {
+        // 成功通關
+        alert("選擇正確！雖然自家 WiFi 速度較慢，但比起不明來源的公共 WiFi 安全得多。不要隨便連接標榜「超高速」的免費網絡。");
+        localStorage.setItem('level_3_done', 'true');
+        window.location.href = "mainpage.html";
+    }
+</script>
+
+</body>
+</html>
