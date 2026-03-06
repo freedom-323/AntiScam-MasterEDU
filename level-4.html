@@ -3,19 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>失敗</title>
+    <title>XYZ Bank 通知</title>
     <style>
-        body { font-family: sans-serif; background: #fff5f5; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
-        .card { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(255,59,48,0.2); max-width: 400px; }
-        .btn { background: #007aff; color: white; border: none; padding: 15px 40px; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+        body { font-family: sans-serif; background: #f2f2f7; padding: 20px; }
+        .email { max-width: 600px; background: white; margin: 20px auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #003366; color: white; padding: 20px; font-weight: bold; display: flex; justify-content: space-between; }
+        .body { padding: 30px; line-height: 1.6; }
+        .sender { color: #d93025; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+        .btn-link { color: #007aff; text-decoration: underline; cursor: pointer; font-weight: bold; }
+        .btn-block { background: #ff3b30; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div style="font-size:80px;">❌</div>
-        <h1 style="color:#d93025;">挑戰失敗</h1>
-        <p style="font-size:18px; color:#444;">剛才那個網頁藏有黑客陷阱！<br>別灰心，這只是練習。再接再厲，您一定能識破它！</p>
-        <button class="btn" onclick="location.href='mainpage.html'">返回主頁</button>
+    <div class="email">
+        <div class="header">
+            <span>XYZ BANK 官方通知</span>
+            <button class="btn-block" onclick="win()">封鎖寄件人</button>
+        </div>
+        <div class="body">
+            <div class="sender">寄件人: alert@xyz-bank-security-service.com</div>
+            <h3>您的帳戶登入異常</h3>
+            <p>親愛的用戶，系統發現您的帳戶正在異地嘗試登入。為保障安全，請立即點擊下方連結確認：</p>
+            <p><span class="btn-link" onclick="location.href='virus.html'">👉 點此進入安全驗證中心</span></p>
+            <p style="font-size:12px; color:#999; margin-top:40px;">*請於24小時內完成，否則帳戶將被凍結。</p>
+        </div>
     </div>
+    <script>
+        function win() {
+            alert("太棒了！辨識出非官方郵件域名並封鎖它是最正確的做法。");
+            localStorage.setItem('level_4_done', 'true');
+            location.href = 'mainpage.html';
+        }
+    </script>
 </body>
 </html>
