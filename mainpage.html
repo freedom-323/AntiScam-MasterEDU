@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網絡安全實戰演習 - 主頁</title>
+    <style>
+        :root { --main-blue: #1976d2; --done-green: #4caf50; }
+        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
+        h1 { color: #333; font-size: 2.5rem; margin-bottom: 10px; }
+        .subtitle { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
+        
+        /* 關卡選單網格 */
+        .level-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+            gap: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+
+        .level-card {
+            background: white;
+            padding: 30px 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .level-card:hover { transform: scale(1.05); border-color: var(--main-blue); }
+        .level-card.completed { border-color: var(--done-green); background-color: #e8f5e9; }
+        .level-card.completed::after { content: "✅ 已完成"; position: absolute; top: 5px; right: 5px; font-size: 12px; color: var(--done-green); font-weight: bold; }
+
+        .level-num { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+        .level-name { font-size: 1.2rem; font-weight: bold; color: #444; }
+
+        .reset-btn { margin-top: 50px; padding: 10px 20px; background: #999; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>🛡️ 網絡安全大挑戰</h1>
+    <p class="subtitle">請點擊關卡開始練習，變身網絡安全達人！</p>
+
+    <div class="level-grid" id="levelGrid">
+        <!-- 這裡會由 JavaScript 自動生成 10 個關卡 -->
+    </div>
+
+    <button class="reset-btn" onclick="resetProgress()">清除所有進度 (重新開始)</button>
+
+    <script>
+        // 定義關卡名稱（可自行修改）
+        const levels = [
+            "中獎訊息", "銀行更新", "假冒家人", "中招廣告", "密碼安全", 
+            "電郵詐騙", "假購物網", "要求驗證碼", "軟件更新", "終極考驗"
+        ];
+
+        function initMainPage() {
+            const grid = document.getElementById('levelGrid');
+            grid.innerHTML = '';
+
+            for (let i = 1; i <= 10; i++) {
+                const isDone = localStorage.getItem(`level_${i}_done`) === 'true';
+                
+                const card = document.createElement('div');
+                card.className = `level-card ${isDone ? 'completed' : ''}`;
+                card.onclick = () => handleLevelClick(i, isDone);
+                
+                card.innerHTML = `
+                    <span class="level-num">${i}</span>
+                    <span class="level-name">${levels[i-1]}</span>
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        function handleLevelClick(levelNum, isDone) {
+            if (isDone) {
+                const retry = confirm(`您已經完成過第 ${levelNum} 關了。要重新練習一次嗎？`);
+                if (!retry) return;
+            }
+            // 跳轉至 level-n.html
+            window.location.href = `level-${levelNum}.html`;
+        }
+
+        // 提供給各個 level-n.html 呼叫的函數
+        // 建議在 level-n.html 中使用：parent.levelIsDone(n) 或直接用 localStorage
+        function levelIsDone(whichlevel) {
+            localStorage.setItem(`level_${whichlevel}_done`, 'true');
+        }
+
+        function resetProgress() {
+            if(confirm("確定要刪除所有通關紀錄嗎？")) {
+                localStorage.clear();
+                initMainPage();
+            }
+        }
+
+        // 初始化頁面
+        window.onload = initMainPage;
+    </script>
+</body>
+</html>
