@@ -3,122 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>網絡安全大挑戰 - 主頁</title>
+    <title>🛡️ 網絡安全大挑戰</title>
     <style>
-        :root { --main-blue: #1976d2; --done-green: #4caf50; --locked-grey: #bdc3c7; }
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
-        h1 { color: #333; font-size: 2.5rem; margin-bottom: 10px; }
-        .subtitle { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
-        
-        .level-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
-            gap: 20px; 
-            max-width: 900px; 
-            margin: 0 auto; 
+        :root { --primary: #007aff; --success: #34c759; --bg: #f2f2f7; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        h1 { font-size: 32px; color: #1c1c1e; margin-bottom: 5px; text-align: center; }
+        .subtitle { color: #8e8e93; font-size: 18px; margin-bottom: 30px; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; }
+        .card { 
+            background: white; border-radius: 20px; padding: 30px 15px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s; position: relative;
         }
-
-        .level-card {
-            background: white;
-            padding: 30px 10px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 3px solid transparent;
-            position: relative;
-        }
-
-        .level-card:hover { transform: scale(1.05); }
-        
-        /* 已完成樣式 */
-        .level-card.completed { border-color: var(--done-green); background-color: #e8f5e9; }
-        .level-card.completed::after { content: "✅ 已完成"; position: absolute; top: 5px; right: 5px; font-size: 12px; color: var(--done-green); font-weight: bold; }
-
-        /* 未解鎖樣式 */
-        .level-card.locked { background-color: #eee; color: #999; cursor: not-allowed; opacity: 0.7; }
-        .level-card.locked .level-num { color: #ccc; }
-
-        .level-num { font-size: 2.5rem; display: block; margin-bottom: 10px; color: var(--main-blue); }
-        .level-name { font-size: 1.1rem; font-weight: bold; color: #444; height: 3em; display: flex; align-items: center; justify-content: center; }
-
-        .reset-btn { margin-top: 50px; padding: 10px 20px; background: #999; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .card:active { transform: scale(0.95); }
+        .card.completed { border: 3px solid var(--success); background: #f2faf3; }
+        .card.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+        .num { font-size: 40px; font-weight: 800; color: var(--primary); display: block; }
+        .name { font-size: 18px; font-weight: 600; color: #3a3a3c; margin-top: 10px; display: block; }
+        .status { position: absolute; top: 8px; right: 8px; font-size: 12px; font-weight: bold; color: var(--success); }
+        .reset { margin-top: 50px; color: #8e8e93; border: none; background: none; cursor: pointer; text-decoration: underline; width: 100%; }
     </style>
 </head>
 <body>
-
     <h1>🛡️ 網絡安全大挑戰</h1>
-    <p class="subtitle">請按順序完成練習，守護您的錢包與個人資料！</p>
-
-    <div class="level-grid" id="levelGrid"></div>
-
-    <button class="reset-btn" onclick="resetProgress()">清除所有進度 (重新開始)</button>
+    <p class="subtitle">點擊關卡開始練習，保護您的個人資料</p>
+    <div class="grid" id="grid"></div>
+    <button class="reset" onclick="if(confirm('確定要清除進度嗎？')){localStorage.clear();location.reload();}">重置所有進度</button>
 
     <script>
-        // 根據你目前的要求更新關卡名稱
-        const levels = [
-            "通訊軟件更新",   // Level 1
-            "安裝 QR 工具",  // Level 2
-            "連接 Wi-Fi",    // Level 3
-            "XYZ銀行郵件",   // Level 4
-            "待定關卡 5",
-            "待定關卡 6",
-            "待定關卡 7",
-            "待定關卡 8",
-            "待定關卡 9",
-            "終極測試"
-        ];
-
-        function initMainPage() {
-            const grid = document.getElementById('levelGrid');
-            grid.innerHTML = '';
-
-            for (let i = 1; i <= 10; i++) {
-                const isDone = localStorage.getItem(`level_${i}_done`) === 'true';
-                
-                // 檢查是否鎖定：如果不是第一關，且前一關未完成
-                let isLocked = false;
-                if (i > 1) {
-                    const prevLevelDone = localStorage.getItem(`level_${i-1}_done`) === 'true';
-                    if (!prevLevelDone) isLocked = true;
-                }
-
-                const card = document.createElement('div');
-                card.className = `level-card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
-                
-                // 點擊事件：如果鎖定則彈窗提示，否則進入處理流程
-                card.onclick = () => {
-                    if (isLocked) {
-                        alert("請先完成前一關，才能解鎖這一關喔！");
-                    } else {
-                        handleLevelClick(i, isDone);
-                    }
-                };
-                
-                card.innerHTML = `
-                    <span class="level-num">${i}</span>
-                    <span class="level-name">${levels[i-1]}</span>
-                `;
-                grid.appendChild(card);
-            }
+        const levels = ["通訊軟件更新", "安裝 QR 工具", "連接 Wi-Fi", "XYZ銀行郵件", "待定關卡 5", "待定關卡 6", "待定關卡 7", "待定關卡 8", "待定關卡 9", "終極測試"];
+        const grid = document.getElementById('grid');
+        for (let i = 1; i <= 10; i++) {
+            const isDone = localStorage.getItem(`level_${i}_done`) === 'true';
+            const isLocked = i > 1 && localStorage.getItem(`level_${i-1}_done`) !== 'true';
+            const card = document.createElement('div');
+            card.className = `card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+            card.innerHTML = `${isDone?'<span class="status">已完成</span>':''}<span class="num">${i}</span><span class="name">${levels[i-1]}</span>`;
+            card.onclick = () => {
+                if(isLocked) return alert("請先完成前一關！");
+                if(isDone && !confirm("重新練習此關卡？")) return;
+                window.location.href = `level-${i}.html`;
+            };
+            grid.appendChild(card);
         }
-
-        function handleLevelClick(levelNum, isDone) {
-            if (isDone) {
-                const retry = confirm(`您已經完成過「${levels[levelNum-1]}」了。要重新練習一次嗎？`);
-                if (!retry) return;
-            }
-            window.location.href = `level-${levelNum}.html`;
-        }
-
-        function resetProgress() {
-            if(confirm("確定要刪除所有通關紀錄嗎？")) {
-                localStorage.clear();
-                initMainPage();
-            }
-        }
-
-        window.onload = initMainPage;
     </script>
 </body>
 </html>
