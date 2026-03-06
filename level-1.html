@@ -3,83 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immediate Chat - 下載更新</title>
+    <title>Immediate Chat 下載</title>
     <style>
-        body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f0f2f5; margin: 0; }
-        .content { display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
-        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; max-width: 400px; }
-        .download-btn { background: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 5px; font-size: 20px; cursor: pointer; }
-        
-        /* 模擬 Chrome 下載警告視窗 */
-        #chrome-mock-dialog {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 350px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border: 1px solid #ccc;
-            padding: 15px;
-            z-index: 1000;
-            animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-        
-        .warning-icon { color: #d93025; font-size: 24px; margin-bottom: 10px; }
-        .warning-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; }
-        .warning-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px; }
-        .btn-keep { background: #d93025; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
-        .btn-discard { background: #f1f3f4; color: #3c4043; border: 1px solid #dadce0; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
-        
-        .success-btn { margin-top: 20px; color: green; cursor: pointer; text-decoration: underline; font-size: 18px; border: none; background: none; }
+        body { font-family: sans-serif; background: #f2f2f7; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .phone { width: 350px; background: white; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); padding: 30px; text-align: center; }
+        .btn { background: #007aff; color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-size: 18px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        .safe-link { color: #8e8e93; display: block; margin-top: 20px; text-decoration: none; font-size: 16px; }
+        /* 模擬 Chrome 警告 */
+        #mock-chrome { display: none; position: fixed; top: 20px; width: 90%; max-width: 350px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 100; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
-
-    <div class="content">
-        <div class="card">
-            <h2 style="color: #075e54;">Immediate Chat</h2>
-            <p>您的版本已過期，請點擊下方按鈕更新以繼續使用。</p>
-            <button class="download-btn" onclick="firstStep()">立即下載 super-virus.zip</button>
-            <br>
-            <button class="success-btn" onclick="safePass()">我不下載，這看起來很危險</button>
+    <div id="mock-chrome">
+        <p style="color:#d93025; font-weight:bold; margin:0;">⚠️ 此檔案可能會損害您的裝置</p>
+        <p style="font-size:14px; margin:10px 0;">您仍要保留 super-virus.zip 嗎？</p>
+        <div style="text-align:right;">
+            <button onclick="location.reload()" style="background:#f1f3f4; border:none; padding:8px 12px; border-radius:4px;">放棄</button>
+            <button onclick="location.href='virus.html'" style="background:#d93025; color:white; border:none; padding:8px 12px; border-radius:4px; margin-left:5px;">保留</button>
         </div>
     </div>
 
-    <!-- 模擬瀏覽器原生下載警告 -->
-    <div id="chrome-mock-dialog">
-        <div class="warning-icon">⚠️</div>
-        <div class="warning-title">此檔案可能會損害您的電腦</div>
-        <p style="font-size: 14px; color: #5f6368;">您仍要保留 super-virus.zip 嗎？</p>
-        <div class="warning-actions">
-            <button class="btn-discard" onclick="location.reload()">放棄</button>
-            <button class="btn-keep" onclick="triggerInfection()">保留</button>
-        </div>
+    <div class="phone">
+        <div style="font-size:60px;">💬</div>
+        <h2>Immediate Chat</h2>
+        <p style="color:#666;">版本 2026.1 已推出<br>請更新以確保通訊不中斷</p>
+        <button class="btn" onclick="firstAlert()">立即下載更新</button>
+        <a href="#" class="safe-link" onclick="win()">這可能是偽造的，我不下載</a>
     </div>
 
     <script>
-        function firstStep() {
-            // 第一道：JS Alert (你要求的)
+        function firstAlert() {
             alert("系統提示：偵測到此文件含有高危病毒！");
-            
-            // 顯示模擬的瀏覽器原生警告 (第二道彈窗)
-            setTimeout(() => {
-                document.getElementById('chrome-mock-dialog').style.display = 'block';
-            }, 500);
+            document.getElementById('mock-chrome').style.display = 'block';
         }
-
-        function triggerInfection() {
-            // 長者忽略了兩道警告，點擊「保留」
-            window.location.href = "virus.html";
-        }
-
-        function safePass() {
-            // 正確做法：警覺並拒絕
-            alert("做得好！看到系統警告或來源不明的文件，絕對不要點擊「保留」或「執行」。");
+        function win() {
+            alert("正確！看到不明下載提示應立即停止。");
             localStorage.setItem('level_1_done', 'true');
-            window.location.href = "mainpage.html";
+            location.href = 'mainpage.html';
         }
     </script>
 </body>
